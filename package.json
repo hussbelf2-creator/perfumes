@@ -1,0 +1,55 @@
+{
+  "dependencies": {
+    "@google/model-viewer": "4.4.0",
+    "@supabase/supabase-js": "2.57.4",
+    "exceljs": "^4.4.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
+    "lucide-react": "0.539.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3",
+    "three": "0.183.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/three": "0.183.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "jiti": "^2.6.1",
+    "playwright": "^1.56.1",
+    "postcss": "^8.5.6",
+    "source-map": "^0.7.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "unplugin-auto-import": "^19.3.0",
+    "vite": "^8.0.1"
+  },
+  "name": "perfume-brand-platform",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "type-check": "tsc -b",
+    "db:apply": "bash scripts/db-apply.sh",
+    "check:backend": "node --env-file-if-exists=.env.local scripts/check-backend.mjs",
+    "test": "npm run test:unit",
+    "test:unit": "node --import ./tests/unit/setup.mjs --import jiti/register --test \"tests/unit/*.test.ts\"",
+    "test:db": "bash tests/db/run.sh && node --import ./tests/unit/setup.mjs --import jiti/register --test \"tests/db/*.test.ts\"",
+    "test:e2e": "node tests/e2e/run.mjs"
+  },
+  "type": "module",
+  "version": "0.0.0",
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}

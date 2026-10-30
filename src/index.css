@@ -1,0 +1,447 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  background-color: #F7F6F3;
+  color: #2B2639;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* الحقول التي تقبل بريداً أو رقماً تُكتب من اليسار */
+input[type="email"],
+input[type="tel"],
+input[type="url"] {
+  direction: ltr;
+}
+
+/* في الواجهة العربية تبقى محاذاة هذه الحقول لليمين رغم أن محتواها لاتيني */
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="url"],
+[dir="rtl"] input[type="email"]::placeholder,
+[dir="rtl"] input[type="tel"]::placeholder {
+  text-align: right;
+}
+
+:focus-visible {
+  outline: 2px solid #15101D;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatWord {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes floatSlowReverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-slow-reverse {
+  animation: floatSlowReverse 5s ease-in-out infinite;
+}
+
+/* ───── نظام "نيش معاصر" ───── */
+
+::selection {
+  background: #FBE9DF;
+  color: #15101D;
+}
+
+/* وسم بأسلوب ملصقات المختبر: N° 01 */
+.label-mono {
+  /* الأرقام واللاتيني بخط أحادي، والعربي يرجع إلى Plex Sans Arabic */
+  font-family: 'IBM Plex Mono', 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 0.75rem;
+  /* بلا تباعد أحرف: التباعد يفكّك اتصال الحروف العربية */
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #787774;
+}
+
+/* ظهور هادئ عند التمرير */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* صور دافئة منخفضة التشبع لتنسجم مع الورق */
+.img-muted {
+  filter: saturate(0.55) sepia(0.12) contrast(0.96);
+}
+
+/* حبيبات ورق خفيفة جداً */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ───── الحركة ───── */
+
+/* وميض هادئ أثناء تحميل الصور */
+.shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.55) 50%, transparent 80%);
+  transform: translateX(100%);
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  to { transform: translateX(-100%); }
+}
+
+/* تكبير بطيء جداً للصور (Ken Burns) */
+.kenburns {
+  animation: kenburns 22s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from { transform: scale(1.02) translate(0, 0); }
+  to { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+
+/* صعود الأسطر من خلف قناع عند التحميل */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* مساحة إضافية فوق وتحت حتى لا تُقص نقاط الياء والهمزات والشدّة أثناء الحركة */
+  padding: 0.12em 0 0.28em;
+  margin: -0.12em 0 -0.28em;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(105%);
+  animation: lineUp 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(120ms + var(--d, 0) * 140ms);
+}
+@keyframes lineUp {
+  to { transform: none; }
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUpIn 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(300ms + var(--d, 0) * 120ms);
+}
+@keyframes fadeUpIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* كشف الصورة بستارة */
+.curtain {
+  clip-path: inset(0 0 100% 0);
+  animation: curtain 1400ms cubic-bezier(0.77, 0, 0.18, 1) 250ms forwards;
+}
+@keyframes curtain {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* عائم بطيء للوسوم فوق الصور */
+.float-a { animation: floatA 7s ease-in-out infinite; }
+.float-b { animation: floatA 9s ease-in-out -3s infinite reverse; }
+@keyframes floatA {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* شريط النوتات المتحرك */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.marquee-wrap:hover .marquee { animation-play-state: paused; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
+}
+
+/* خط يُرسم عند الظهور */
+.draw-x {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 1600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.draw-x.is-in { transform: scaleX(1); }
+
+/* سهم يتحرك مع المرور على البطاقة */
+.group:hover .nudge { transform: translateX(-4px); }
+.nudge { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* رفع خفيف للبطاقات */
+.lift { transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 400ms, border-color 300ms; }
+.lift:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(17, 17, 17, 0.06); }
+
+/* رسوم بيانية: نمو الأعمدة ورسم الخطوط */
+.bar-grow {
+  transform: scaleX(0);
+  transform-origin: right;
+  transform-box: fill-box;
+  transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.is-in .bar-grow { transform: scaleX(1); }
+.line-draw {
+  stroke-dasharray: var(--len, 2000);
+  stroke-dashoffset: var(--len, 2000);
+  transition: stroke-dashoffset 1800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.is-in .line-draw { stroke-dashoffset: 0; }
+.ring-draw {
+  transition: stroke-dashoffset 1600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns, .float-a, .float-b, .marquee, .shimmer::before { animation: none !important; }
+  .line-mask > span, .fade-up { transform: none; opacity: 1; animation: none; }
+  .curtain { clip-path: none; animation: none; }
+  .draw-x, .bar-grow { transform: none; transition: none; }
+  .line-draw { stroke-dashoffset: 0; transition: none; }
+}
+
+.drawer-in { animation: drawerIn 320ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes drawerIn { from { transform: translateX(100%); } to { transform: none; } }
+
+
+/* ───── اتجاه الواجهة: عكس نقاط الأصل والحركة في الإنجليزية ───── */
+[dir="ltr"] .draw-x,
+[dir="ltr"] .bar-grow { transform-origin: left; }
+[dir="ltr"] .marquee { animation-name: marqueeLtr; }
+@keyframes marqueeLtr {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+[dir="ltr"] .group:hover .nudge { transform: translateX(4px); }
+[dir="ltr"] .drawer-in { animation-name: drawerInLtr; }
+@keyframes drawerInLtr { from { transform: translateX(-100%); } to { transform: none; } }
+/* أيقونات الأسهم تنقلب مع الاتجاه */
+[dir="ltr"] .flip-ltr { transform: scaleX(-1); }
+[dir="ltr"] .group:hover .nudge.flip-ltr { transform: scaleX(-1) translateX(-4px); }
+
+/* العناوين بخط Readex: تباعد أحرف سالب طفيف للاتينية فقط */
+:lang(en) .font-display { letter-spacing: -0.02em; }
+.font-display { font-weight: 500; }
+
+/* ظهور لوحة المحتوى عند التبديل */
+.panel-in { animation: panelIn 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes panelIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* مؤشر التقدّم في عرض الخدمات التلقائي */
+.progress-6s { width: 100%; transform-origin: right; animation: progress 6s linear forwards; }
+[dir="ltr"] .progress-6s { transform-origin: left; }
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-in, .progress-6s { animation: none; }
+}
+
+/* ───── نظام العرض التفاعلي ───── */
+
+/* خلفية شبكية: تدرجات دائرية من البنفسجي والمرجاني والنعناعي فوق الورق */
+.mesh {
+  background-color: #F7F6F3;
+  background-image:
+    radial-gradient(40rem 30rem at 85% -10%, rgba(228, 97, 46, 0.14), transparent 60%),
+    radial-gradient(34rem 26rem at 5% 20%, rgba(47, 162, 135, 0.12), transparent 60%),
+    radial-gradient(44rem 34rem at 55% 110%, rgba(115, 98, 140, 0.14), transparent 60%);
+}
+.mesh-dark {
+  background-color: #15101D;
+  background-image:
+    radial-gradient(48rem 36rem at 80% -10%, rgba(228, 97, 46, 0.32), transparent 62%),
+    radial-gradient(40rem 30rem at -5% 60%, rgba(47, 162, 135, 0.22), transparent 60%),
+    radial-gradient(36rem 36rem at 60% 120%, rgba(212, 168, 83, 0.18), transparent 60%);
+}
+
+/* بقعة ضوء تتبع المؤشر (--sx/--sy من useSpotlight) */
+.spot {
+  position: relative;
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(28rem 28rem at var(--sx, 50%) var(--sy, 30%), rgba(255, 255, 255, 0.10), transparent 60%);
+  transition: opacity 400ms;
+}
+
+/* ميل ثلاثي الأبعاد مع وهج يتبع المؤشر (--mx/--my من useTilt) */
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms;
+  will-change: transform;
+}
+.tilt:hover { box-shadow: 0 24px 60px rgba(21, 16, 29, 0.16); }
+.glow { position: relative; overflow: hidden; }
+.glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(18rem 18rem at var(--mx, 50%) var(--my, 50%), rgba(228, 97, 46, 0.16), transparent 60%);
+  transition: opacity 300ms;
+}
+.glow:hover::after { opacity: 1; }
+
+/* نص بتدرج لوني حي */
+.gradient-text {
+  background: linear-gradient(100deg, #E4612E 0%, #D4A853 45%, #2FA287 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 9s ease-in-out infinite alternate;
+}
+@keyframes gradientShift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+
+/* حدّ متدرج دوّار للبطاقات المميزة */
+.ring-gradient {
+  position: relative;
+}
+.ring-gradient::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--a, 0deg), #E4612E, #D4A853, #2FA287, #73628C, #E4612E);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: spinRing 8s linear infinite;
+}
+@property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes spinRing { to { --a: 360deg; } }
+
+/* حبيبات خفيفة فوق الأقسام الداكنة */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text, .ring-gradient::before { animation: none; }
+  .tilt { transition: none; }
+}

@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin
+Disallow: /account
+Disallow: /auth
+Disallow: /contract/
+Disallow: /start/
+Disallow: /discovery-kit/paid
+Allow: /
+
+Sitemap: https://perfumes-phi.vercel.app/sitemap.xml
